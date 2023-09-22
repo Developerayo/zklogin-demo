@@ -1,4 +1,10 @@
+import { useLottie } from "./helpers/useLottie";
+import animationData from "./components/interface/animations/login.json";
+import anotherAnimation from "./components/interface/animations/google.json";
+
 function App() {
+  const { container } = useLottie(animationData, true);
+  const { container: newAnimation } = useLottie(anotherAnimation, true);
   const REDIRECT_URI = "http://localhost:3000/dashboard";
 
   const params = new URLSearchParams({
@@ -18,12 +24,14 @@ function App() {
 
   const loginURL = `https://accounts.google.com/o/oauth2/v2/auth?${params}`;
   return (
-    <div className="">
-      <h1 className="text-xl font-bold">Welcome to ZKLogin Demo App</h1>
+    <div className="flex flex-col items-center gap-4">
+      <h1 className="text-2xl text-gray-600 font-bold">ZKLogin Demo</h1>
+      <div ref={container}></div>
       <a
-        className="px-4 py-2 rounded-md text-white font-semibold bg-indigo-600"
+        className="flex text-lg items-center justify-center w-full gap-4 pr-4 rounded-md text-gray-700 hover:bg-gray-200 max-w-[20em] font-bold bg-[#e4e4e4]"
         href={loginURL}
       >
+        <div className="max-w-[60px]" ref={newAnimation}></div>
         Login with google
       </a>
     </div>
