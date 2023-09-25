@@ -62,8 +62,6 @@ export const useNonce = () => {
           maxEpoch,
           randomness
         );
-        console.log(calculatedNonce);
-
         setNonce(calculatedNonce);
       } catch (error) {
         console.error("Error getting nonce:", error);
