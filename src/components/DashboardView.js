@@ -1,18 +1,9 @@
 import React, { useContext } from "react";
 import { AuthContext } from "../context/authContext";
 
-// const isAuthenticated = () => {
-//   const token = localStorage.getItem("nonce");
-//   // Check if the token is valid or if it meets your authentication criteria
-//   console.log(token);
-//   return !!token;
-// };
-
 export default function DashboardView() {
   const { address } = useContext(AuthContext);
-  // if (!isAuthenticated()) {
-  //   return <App to="/" />; // Redirect to login page if not authenticated
-  // }
+
   return (
     <div className="flex w-full flex-col gap-2 items-center justify-between">
       <h2 className="text-xl font-bold">Welcome!!!</h2>
