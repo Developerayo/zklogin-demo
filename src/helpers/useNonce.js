@@ -2,8 +2,9 @@ import { generateNonce } from "@mysten/zklogin";
 import { SuiClient, getFullnodeUrl } from "@mysten/sui.js/client";
 import { Ed25519Keypair } from "@mysten/sui.js/keypairs/ed25519";
 import { useEffect, useState } from "react";
-// var Buffer = require("buffer/").Buffer;
-import { Buffer } from "buffer";
+// Handle Buffer error
+window.global = window;
+window.Buffer = window.Buffer || require("buffer").Buffer;
 
 function generateRandomBytes(length) {
   const characters =
@@ -20,8 +21,7 @@ function generateRandomBytes(length) {
 
 function generateRandomness() {
   const randomBytesArray = generateRandomBytes(16); // Generate 16 random bytes
-  window.global = window;
-  window.Buffer = window.Buffer || require("buffer").Buffer;
+
   const bigIntValue = Buffer.from(randomBytesArray).reduce(
     // eslint-disable-next-line no-undef
     (acc, byte) => (acc << 8n) | BigInt(byte),
