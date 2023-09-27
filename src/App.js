@@ -1,7 +1,8 @@
 import { useLottie } from "./helpers/useLottie";
-import { useNonce } from "./helpers/useNonce";
 import loginAnimationData from "./components/interface/animations/login.json";
 import googleAnimationData from "./components/interface/animations/google.json";
+import { useContext } from "react";
+import { AuthContext } from "./context/authContext";
 
 function App() {
   const { container } = useLottie(loginAnimationData, true);
@@ -9,7 +10,7 @@ function App() {
     googleAnimationData,
     true
   );
-  const { nonce } = useNonce();
+  const { nonce } = useContext(AuthContext);
 
   const REDIRECT_URI = "http://localhost:3000/dashboard";
 

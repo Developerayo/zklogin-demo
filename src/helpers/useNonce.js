@@ -47,6 +47,7 @@ const getActiveNetworkSuiClient = async () => {
 
 export const useNonce = () => {
   const [nonce, setNonce] = useState(null);
+  const [metadata, setMetadata] = useState(null);
 
   useEffect(() => {
     const getNonce = async () => {
@@ -62,7 +63,9 @@ export const useNonce = () => {
           maxEpoch,
           randomness
         );
+
         setNonce(calculatedNonce);
+        setMetadata({ maxEpoch, randomness });
       } catch (error) {
         console.error("Error getting nonce:", error);
       }
@@ -70,5 +73,9 @@ export const useNonce = () => {
     getNonce();
   }, []);
 
-  return { nonce };
+  return {
+    maxEpoch: metadata?.maxEpoch,
+    nonce,
+    randomness: metadata?.randomness,
+  };
 };

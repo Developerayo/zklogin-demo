@@ -1,5 +1,9 @@
 import { createContext, useCallback, useEffect, useState } from "react";
 import { jwtToAddress } from "@mysten/zklogin";
+import { useNonce } from "../helpers/useNonce";
+import useLocalStorage from "../hooks/data/useLocalStorage";
+import { useNavigate } from "react-router-dom";
+// fix Buffer error
 window.global = window;
 window.Buffer = window.Buffer || require("buffer").Buffer;
 
@@ -7,10 +11,34 @@ export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [address, setAdress] = useState("");
+  const { nonce } = useNonce();
+
+  const [userToken, setUserToken] = useLocalStorage("jwtToken", "");
+
+  const navigate = useNavigate();
+
+  //dummy fetch of netlify functions
+  // const fetchNetlify = async () => {
+  //   const res = await fetch("/.netlify/functions/zkLoginData");
+  //   const result = await res.json();
+  //   console.log(result.message);
+  // };
+
+  // useEffect(() => {
+  //   fetchNetlify();
+  // }, []);
+
+  // Fetch Salt
   const fetchSalt = useCallback(async (jwtToken) => {
+    if (!jwtToken) return "";
     try {
-      const response = await fetch(`http://localhost:5000?token=${jwtToken}`);
+      const response = await fetch(
+        `/.netlify/functions/zkLoginData?token=${jwtToken}`
+      );
       const result = await response.json();
+      if (result && typeof result !== "object") {
+        throw new Error("Response is not in JSON format");
+      }
       return result.salt;
     } catch (error) {
       console.error(error);
@@ -18,26 +46,40 @@ export const AuthProvider = ({ children }) => {
     return "";
   }, []);
 
-  const getAddress = useCallback(
-    async (idToken) => {
-      if (idToken) {
-        const salt = await fetchSalt(idToken);
-        const userAddress = jwtToAddress(idToken, salt);
-        console.log(userAddress);
-        setAdress(userAddress);
-      }
-    },
-    [fetchSalt]
-  );
+  // Obtain Address by using fetched salt and jwtToken
+  const getAddress = useCallback(async (salt, token) => {
+    const userAddress = jwtToAddress(token, salt);
+    // console.log("userAddress", userAddress);
+    setAdress(userAddress);
+  }, []);
+
+  const fetchSaltAndGetAddress = useCallback(async () => {
+    // If there is a userToken, fetch salt and get address
+    if (userToken) {
+      const salt = await fetchSalt(userToken);
+      if (salt) getAddress(salt, userToken);
+    }
+  }, [fetchSalt, getAddress, userToken]);
+
+  useEffect(() => {
+    fetchSaltAndGetAddress();
+  }, [fetchSaltAndGetAddress]);
 
   useEffect(() => {
     const hash = window.location.hash;
     const params = new URLSearchParams(hash.slice(1));
     const idToken = params.get("id_token");
-    getAddress(idToken);
-  }, [fetchSalt, getAddress]);
+    if (idToken) setUserToken(idToken);
+  }, [setUserToken]);
+
+  const logout = () => {
+    setUserToken("");
+    navigate("/");
+  };
 
   return (
-    <AuthContext.Provider value={{ address }}>{children}</AuthContext.Provider>
+    <AuthContext.Provider value={{ address, nonce, logout }}>
+      {children}
+    </AuthContext.Provider>
   );
 };
