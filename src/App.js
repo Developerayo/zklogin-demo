@@ -12,7 +12,7 @@ function App() {
   );
   const { nonce } = useContext(AuthContext);
 
-  const REDIRECT_URI = "http:localhost:8888/dashboard";
+  const REDIRECT_URI = "https://zklogin.netlify.app/dashboard";
 
   // const REDIRECT_URI = `${apiUrl}/dashboard`;
 
