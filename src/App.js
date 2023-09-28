@@ -12,7 +12,11 @@ function App() {
   );
   const { nonce } = useContext(AuthContext);
 
-  const REDIRECT_URI = "http://localhost:3000/dashboard";
+  const apiUrl =
+    process.env.NODE_ENV === "production"
+      ? process.env.REACT_APP_API_URL_PROD
+      : "http://localhost:8888";
+  const REDIRECT_URI = `${apiUrl}/dashboard`;
 
   const params = new URLSearchParams({
     state: new URLSearchParams({

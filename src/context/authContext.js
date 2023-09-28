@@ -12,25 +12,13 @@ export const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [address, setAdress] = useState("");
   const { nonce } = useNonce();
-
   const [userToken, setUserToken] = useLocalStorage("jwtToken", "");
-
   const navigate = useNavigate();
-
-  //dummy fetch of netlify functions
-  // const fetchNetlify = async () => {
-  //   const res = await fetch("/.netlify/functions/zkLoginData");
-  //   const result = await res.json();
-  //   console.log(result.message);
-  // };
-
-  // useEffect(() => {
-  //   fetchNetlify();
-  // }, []);
 
   // Fetch Salt
   const fetchSalt = useCallback(async (jwtToken) => {
     if (!jwtToken) return "";
+
     try {
       const response = await fetch(
         `/.netlify/functions/zkLoginData?token=${jwtToken}`
@@ -49,7 +37,6 @@ export const AuthProvider = ({ children }) => {
   // Obtain Address by using fetched salt and jwtToken
   const getAddress = useCallback(async (salt, token) => {
     const userAddress = jwtToAddress(token, salt);
-    // console.log("userAddress", userAddress);
     setAdress(userAddress);
   }, []);
 
@@ -78,7 +65,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ address, nonce, logout }}>
+    <AuthContext.Provider value={{ address, nonce, logout, userToken }}>
       {children}
     </AuthContext.Provider>
   );
