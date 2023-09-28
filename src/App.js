@@ -12,10 +12,7 @@ function App() {
   );
   const { nonce } = useContext(AuthContext);
 
-  const REDIRECT_URI =
-    process.env.NODE_ENV === "production"
-      ? process.env.REACT_APP_API_URL_PROD
-      : "http://localhost:8888/dashboard";
+  const REDIRECT_URI = "https://zklogin.netlify.app/dashboard";
 
   // const REDIRECT_URI = `${apiUrl}/dashboard`;
 
