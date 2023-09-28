@@ -1,7 +1,7 @@
 import { useLottie } from "./helpers/useLottie";
 import loginAnimationData from "./components/interface/animations/login.json";
 import googleAnimationData from "./components/interface/animations/google.json";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { AuthContext } from "./context/authContext";
 
 function App() {
@@ -12,21 +12,12 @@ function App() {
   );
   const { nonce } = useContext(AuthContext);
 
-  const apiUrl =
+  const REDIRECT_URI =
     process.env.NODE_ENV === "production"
       ? process.env.REACT_APP_API_URL_PROD
-      : "http://localhost:8888";
+      : "http://localhost:8888/dashboard";
 
-  useEffect(() => {
-    // Redirect logic based on the environment
-    if (process.env.NODE_ENV === "production") {
-      window.location.href = "https://zklogin.netlify.app";
-    } else {
-      // Handle development redirection or display a message
-      console.log("This is the development environment.");
-    }
-  }, []);
-  const REDIRECT_URI = `${apiUrl}/dashboard`;
+  // const REDIRECT_URI = `${apiUrl}/dashboard`;
 
   const params = new URLSearchParams({
     state: new URLSearchParams({
