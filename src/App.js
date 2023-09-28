@@ -12,7 +12,7 @@ function App() {
   );
   const { nonce } = useContext(AuthContext);
 
-  const REDIRECT_URI = "https//zklogin.netlify.app/dashboard";
+  const REDIRECT_URI = "http:localhost:8888/dashboard";
 
   // const REDIRECT_URI = `${apiUrl}/dashboard`;
 
@@ -22,7 +22,7 @@ function App() {
     }).toString(),
     client_id:
       "25769832374-famecqrhe2gkebt5fvqms2263046lj96.apps.googleusercontent.com",
-    redirect_uri: "https://zklogin.netlify.app",
+    redirect_uri: "https://zklogin-dev-redirect.vercel.app/api/auth",
     response_type: "id_token",
     scope: "openid",
     nonce: nonce,
