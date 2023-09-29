@@ -49,18 +49,14 @@ export const AuthProvider = ({ children }) => {
   }, [fetchSalt, getAddress, userToken]);
 
   useEffect(() => {
-    fetchSaltAndGetAddress();
-  }, [fetchSaltAndGetAddress]);
-
-  useEffect(() => {
-    const fullUrlAfterLogin = decodeURIComponent(window.location.href);
+    const fullUrlAfterLogin = window.location.href;
     const hash = new URL(fullUrlAfterLogin).hash;
     const params = new URLSearchParams(hash.slice(1));
     const idToken = params.get("id_token");
-
-    if (idToken) { setUserToken(idToken);
-      window.history.replaceState({}, document.title, window.location.href.split("#")[0]);
-      navigate("/dashboard");
+  
+    if (idToken) {
+      setUserToken(idToken);
+      navigate('/dashboard', { replace: true });
     }
   }, [setUserToken, navigate]);
 

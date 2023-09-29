@@ -9,7 +9,7 @@ const fetchSaltData = async (token) => {
       redirect: "follow",
     };
     const saltResponse = await fetch(
-      "http://salt.api-devnet.mystenlabs.com/get_salt",
+      "https://salt.api-devnet.mystenlabs.com/get_salt",
       requestOptions1
     );
 
