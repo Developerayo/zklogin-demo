@@ -53,16 +53,11 @@ export const AuthProvider = ({ children }) => {
   }, [fetchSaltAndGetAddress]);
 
   useEffect(() => {
-    const fullUrlAfterLogin = decodeURIComponent(window.location.href);
-    const hash = new URL(fullUrlAfterLogin).hash;
+    const hash = window.location.hash;
     const params = new URLSearchParams(hash.slice(1));
     const idToken = params.get("id_token");
-
-    if (idToken) { setUserToken(idToken);
-      window.history.replaceState({}, document.title, window.location.href.split("#")[0]);
-      navigate("/dashboard");
-    }
-  }, [setUserToken, navigate]);
+    if (idToken) setUserToken(idToken);
+  }, [setUserToken]);
 
   const logout = () => {
     setUserToken("");
