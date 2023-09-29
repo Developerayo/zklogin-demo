@@ -49,6 +49,10 @@ export const AuthProvider = ({ children }) => {
   }, [fetchSalt, getAddress, userToken]);
 
   useEffect(() => {
+    fetchSaltAndGetAddress();
+  }, [fetchSaltAndGetAddress]);
+  
+  useEffect(() => {
     const fullUrlAfterLogin = window.location.href;
     const hash = new URL(fullUrlAfterLogin).hash;
     const params = new URLSearchParams(hash.slice(1));
