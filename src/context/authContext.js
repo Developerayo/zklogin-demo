@@ -60,9 +60,9 @@ export const AuthProvider = ({ children }) => {
   
     if (idToken) {
       setUserToken(idToken);
-      navigate('/dashboard', { replace: true });
+      navigate('/dashboard');
     }
-  }, [setUserToken, navigate]);
+    }, [setUserToken, navigate]);
 
   const logout = () => {
     setUserToken("");

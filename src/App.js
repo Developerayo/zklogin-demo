@@ -17,16 +17,14 @@ function App() {
   // const REDIRECT_URI = `${apiUrl}/dashboard`;
 
   const params = new URLSearchParams({
-    state: new URLSearchParams({
-      redirect_uri: REDIRECT_URI,
-    }).toString(),
+    state: `redirect_uri=${encodeURIComponent(REDIRECT_URI)}`,
     client_id:
       "25769832374-famecqrhe2gkebt5fvqms2263046lj96.apps.googleusercontent.com",
     redirect_uri: "https://zklogin-dev-redirect.vercel.app/api/auth",
     response_type: "id_token",
     scope: "openid",
     nonce: nonce,
-  });
+  });  
 
   const loginURL = `https://accounts.google.com/o/oauth2/v2/auth?${params}`;
 
